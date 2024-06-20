@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
     push:
-        branches: ['main']
+        branches: ['main', 'master']
     pull_request:
-        branches: ['main']
+        branches: ['main', 'master']
 
 jobs:
     build:
@@ -34,7 +34,7 @@ jobs:
                   file: ./Dockerfile
                   platforms: linux/arm64,linux/amd64
                   push: true
-                  tags: sonatypecommunity/nexus3:latest , sonatypecommunity/nexus3:${{ env.NXRM_VERSION }}
+                  tags: ${{ secrets.REGISTRY_USERNAME }}/nexus3:latest , ${{ secrets.REGISTRY_USERNAME }}/nexus3:${{ env.NXRM_VERSION }}
 
             - name: Build and push Java 11
               uses: docker/build-push-action@v5
@@ -43,4 +43,4 @@ jobs:
                   file: ./Dockerfile.java11
                   platforms: linux/arm64,linux/amd64
                   push: true
-                  tags: sonatypecommunity/nexus3:${{ env.NXRM_VERSION }}-java11
+                  tags: ${{ secrets.REGISTRY_USERNAME }}/nexus3:${{ env.NXRM_VERSION }}-java11
