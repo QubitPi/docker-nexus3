@@ -23,6 +23,8 @@
 
 [![Join the chat at https://gitter.im/sonatype/nexus-developers](https://badges.gitter.im/sonatype/nexus-developers.svg)](https://gitter.im/sonatype/nexus-developers?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+[![Docker Image Version][Docker badge]][Docker URL]
+
 A Dockerfile for Sonatype Nexus Repository 3, starting with 3.18 the image is based on the [Red Hat Universal Base Image](https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image) while earlier versions used CentOS.
 
 * [Contribution Guidlines](#contribution-guidelines)
@@ -184,3 +186,6 @@ Looking to contribute to our Docker image but need some help? There's a few ways
 ## License Disclaimer
 
 _Sonatype Nexus Repository OSS is distributed with Sencha Ext JS pursuant to a FLOSS Exception agreed upon between Sonatype, Inc. and Sencha Inc. Sencha Ext JS is licensed under GPL v3 and cannot be redistributed as part of a closed source work._
+
+[Docker badge]: https://img.shields.io/docker/v/jack20191124/nexus3?style=for-the-badge&logo=docker&color=309DEE
+[Docker URL]: https://hub.docker.com/r/jack20191124/nexus3
