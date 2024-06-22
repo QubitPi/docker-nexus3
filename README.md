@@ -165,6 +165,9 @@ for additional information.
   $ docker run -d -p 8081:8081 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
   ```
 
+  Since docker volumes are persistent, a volume can be created specifically for persisting data. This is the recommended
+  because it can be used for [backup later](#creating-backup) as well.
+
   2. *Mount a host directory as the volume*.  This is not portable, as it
   relies on the directory existing with correct permissions on the host.
   However it can be useful in certain situations where this volume needs
@@ -174,6 +177,42 @@ for additional information.
   $ mkdir /some/dir/nexus-data && chown -R 200 /some/dir/nexus-data
   $ docker run -d -p 8081:8081 --name nexus -v /some/dir/nexus-data:/nexus-data sonatype/nexus3
   ```
+
+#### Creating Backup
+
+> [!IMPORTANT]
+> 
+> This section assumes the _Use a docker volume_ is used for [data persistence](#persistent-data)
+> Make sure Docker commands can be executed without `sudo`
+
+1. SSH into the EC2 instance
+2. Generate backup with
+
+   ```console
+   docker run --rm --volumes-from nexus -v /home/ubuntu:/backup ubuntu tar cvf /backup/backup.tar /nexus-data
+   ``` 
+
+   A file named `backup.tar` will be generated under `/home/ubuntu` directory. More information about backing up a
+   Docker volumn can be found [here](https://docs.docker.com/storage/volumes/#back-up-a-volume)
+
+3. `scp` the `backup.tar` off the EC2 machine and save it to a proper place.
+
+##### Restoring From Backup
+
+1. Make sure `/home/ubuntu/backup.tar` on nexus EC2 is removed
+2. `scp` backup.tar onto EC2's __/home/ubuntu__ directory
+3. ssh into the EC2
+4. Apply the backup to the running nexus:
+
+   ```bash
+   docker run --rm --volumes-from nexus -v $(pwd):/backup ubuntu bash -c "cd /nexus-data && mv /backup/backup.tar . && tar xvf backup.tar --strip 1"
+   ```
+
+5. Restart Nexus container:
+
+   ```bash
+   docker restart nexus
+   ```
 
 ## Getting Help
 
